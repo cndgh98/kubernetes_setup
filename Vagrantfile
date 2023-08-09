@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
       subconfig.vm.provider "virtualbox" do |v|
         v.customize ["modifyvm", :id, "--groups", "/#{cni_N}-Lab"]
         v.name = "#{cni_N}-k8s-m"
-        v.memory = 2048
+        v.memory = 4096
         v.cpus = 2 
         v.linked_clone = true
       end
@@ -25,8 +25,8 @@ Vagrant.configure("2") do |config|
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
       subconfig.vm.network "private_network", ip: "192.168.10.10"
       subconfig.vm.network "forwarded_port", guest: 22, host: 50010, auto_correct: true, id: "ssh"
-      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/Beas-github/test/master/T2/init_cfg.sh", args: [ N, k8s_V ]
-      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/Beas-github/test/master/T2/master.sh", args: [ cni_N ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/cndgh98/kubernetes_setup/main/init_cfg.sh", args: [ N, k8s_V ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/cndgh98/kubernetes_setup/main/master.sh", args: [ cni_N ]
     end
 
 #-----Worker Node Subnet1
@@ -37,16 +37,16 @@ Vagrant.configure("2") do |config|
       subconfig.vm.provider "virtualbox" do |v|
         v.customize ["modifyvm", :id, "--groups", "/#{cni_N}-Lab"]
         v.name = "#{cni_N}-k8s-w#{i}"
-        v.memory = 1536
-        v.cpus = 2
+        v.memory = 2048
+        v.cpus = 1
         v.linked_clone = true
       end
       subconfig.vm.hostname = "k8s-w#{i}"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
       subconfig.vm.network "private_network", ip: "192.168.10.10#{i}"
       subconfig.vm.network "forwarded_port", guest: 22, host: "5001#{i}", auto_correct: true, id: "ssh"
-      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/Beas-github/test/master/T2/init_cfg.sh", args: [ N, k8s_V ]
-      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/Beas-github/test/master/T2/worker.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/cndgh98/kubernetes_setup/main/init_cfg.sh", args: [ N, k8s_V ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/cndgh98/kubernetes_setup/main/worker.sh"
     end
   end
 

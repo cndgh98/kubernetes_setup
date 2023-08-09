@@ -15,6 +15,7 @@ echo "[TASK 3] Install cailco CNI"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
 wget https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml  
 sed -i 's/cidr: 192\.168\.0\.0\/16/cidr: 172\.30\.0\.0\/16/g' custom-resources.yaml
+sed -i '7a registry: quay.io/' custom-resources.yaml
 kubectl create -f custom-resources.yaml
 
 echo "[TASK 5] Source the completion"
